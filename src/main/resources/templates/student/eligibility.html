@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Job Eligibility</title>
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+
+<!-- NAVBAR -->
+
+<nav class="navbar navbar-dark bg-primary">
+
+    <div class="container">
+
+        <a class="navbar-brand"
+           href="/student/dashboard">
+
+            Smart Career
+
+        </a>
+
+        <a class="btn btn-light"
+           href="/student/dashboard">
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- MAIN CONTENT -->
+
+<div class="container mt-5">
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="text-center mb-4">
+
+        <h2>Job Eligibility Check</h2>
+
+        <p class="text-muted">
+            Check whether you are eligible for this job.
+        </p>
+
+    </div>
+
+
+    <!-- FINAL RESULT -->
+
+    <div th:if="${result.eligible}"
+         class="alert alert-success text-center">
+
+        <h3>✓ Eligible</h3>
+
+        <p class="mb-0">
+            You are eligible to apply for this job.
+        </p>
+
+    </div>
+
+
+    <div th:unless="${result.eligible}"
+         class="alert alert-danger text-center">
+
+        <h3>✗ Not Eligible</h3>
+
+        <p class="mb-0">
+            You currently do not satisfy all eligibility requirements.
+        </p>
+
+    </div>
+
+
+    <!-- CGPA CARD -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                CGPA Requirement
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                <strong>Your CGPA:</strong>
+
+                <span th:if="${result.studentCgpa != null}"
+                      th:text="${result.studentCgpa}">
+                </span>
+
+                <span th:unless="${result.studentCgpa != null}">
+                    Not Available
+                </span>
+            </p>
+
+
+            <p>
+
+                <strong>Required CGPA:</strong>
+
+                <span th:if="${result.requiredCgpa != null}"
+                      th:text="${result.requiredCgpa}">
+                </span>
+
+                <span th:unless="${result.requiredCgpa != null}">
+                    No minimum requirement
+                </span>
+
+            </p>
+
+
+            <div th:if="${result.cgpaPassed}"
+                 class="alert alert-success mb-0">
+
+                ✓ CGPA requirement passed.
+
+            </div>
+
+
+            <div th:unless="${result.cgpaPassed}"
+                 class="alert alert-danger mb-0">
+
+                ✗ CGPA requirement not passed.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SKILLS CARD -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Required Skills
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+
+            <h6>Matching Skills</h6>
+
+            <div th:if="${#lists.isEmpty(result.matchingSkills)}">
+
+                <p class="text-muted">
+                    No matching skills found.
+                </p>
+
+            </div>
+
+
+            <div th:unless="${#lists.isEmpty(result.matchingSkills)}">
+
+                <span
+                        th:each="skill : ${result.matchingSkills}"
+                        class="badge bg-success me-2 mb-2"
+                        th:text="${skill}">
+                </span>
+
+            </div>
+
+
+            <hr>
+
+
+            <h6>Missing Skills</h6>
+
+            <div th:if="${#lists.isEmpty(result.missingSkills)}">
+
+                <p class="text-success">
+
+                    ✓ No required skills are missing.
+
+                </p>
+
+            </div>
+
+
+            <div th:unless="${#lists.isEmpty(result.missingSkills)}">
+
+                <span
+                        th:each="skill : ${result.missingSkills}"
+                        class="badge bg-danger me-2 mb-2"
+                        th:text="${skill}">
+                </span>
+
+            </div>
+
+
+            <hr>
+
+
+            <div th:if="${result.skillsPassed}"
+                 class="alert alert-success mb-0">
+
+                ✓ Skill requirement passed.
+
+            </div>
+
+
+            <div th:unless="${result.skillsPassed}"
+                 class="alert alert-danger mb-0">
+
+                ✗ Skill requirement not passed.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BACKLOG CARD -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Backlog Requirement
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <p>
+
+                <strong>Your Backlogs:</strong>
+
+                <span th:if="${result.studentBacklogs != null}"
+                      th:text="${result.studentBacklogs}">
+                </span>
+
+                <span th:unless="${result.studentBacklogs != null}">
+                    Not Available
+                </span>
+
+            </p>
+
+
+            <p class="text-muted">
+                Current project rule: student must have 0 backlogs.
+            </p>
+
+
+            <div th:if="${result.backlogsPassed}"
+                 class="alert alert-success mb-0">
+
+                ✓ Backlog requirement passed.
+
+            </div>
+
+
+            <div th:unless="${result.backlogsPassed}"
+                 class="alert alert-danger mb-0">
+
+                ✗ Backlog requirement not passed.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- REASONS -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Eligibility Details
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <ul>
+
+                <li th:each="reason : ${result.reasons}"
+                    th:text="${reason}">
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <!-- BACK BUTTON -->
+
+    <div class="text-center mb-5">
+
+        <a href="/student/dashboard"
+           class="btn btn-primary">
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- BOOTSTRAP -->
+
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+
+</html>

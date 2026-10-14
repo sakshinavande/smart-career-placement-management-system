@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>My Jobs</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2>My Jobs</h2>
+            <p class="text-muted">
+                Manage jobs posted by your company.
+            </p>
+        </div>
+
+        <a href="/company/jobs/new"
+           class="btn btn-primary">
+            + Post New Job
+        </a>
+
+    </div>
+
+
+    <div th:if="${jobs == null or #lists.isEmpty(jobs)}"
+         class="alert alert-info">
+
+        No jobs have been posted yet.
+
+        <a href="/company/jobs/new">
+            Post your first job
+        </a>
+
+    </div>
+
+
+    <div th:if="${jobs != null and !#lists.isEmpty(jobs)}"
+         class="row">
+
+        <div class="col-md-6 mb-4"
+             th:each="job : ${jobs}">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <h5 class="card-title"
+                            th:text="${job.jobTitle}">
+                            Java Developer
+                        </h5>
+
+                        <span
+                            class="badge bg-success"
+                            th:text="${job.status}">
+                            OPEN
+                        </span>
+
+                    </div>
+
+                    <p class="text-muted"
+                       th:text="${job.location}">
+                        Pune
+                    </p>
+
+                    <hr>
+
+                    <p>
+                        <strong>Job Type:</strong>
+                        <span th:text="${job.jobType}">
+                            Full Time
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Skills:</strong>
+                        <span th:text="${job.requiredSkills}">
+                            Java, Spring Boot, SQL
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Minimum CGPA:</strong>
+                        <span th:text="${job.minCgpa}">
+                            7.0
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Salary:</strong>
+                        ₹<span th:text="${job.salary}">
+                            500000
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Deadline:</strong>
+                        <span th:text="${job.applicationDeadline}">
+                            2026-10-30
+                        </span>
+                    </p>
+
+
+                    <div class="mt-3">
+
+                        <a th:href="@{/company/jobs/view/{id}(id=${job.id})}"
+                           class="btn btn-info btn-sm">
+                            View
+                        </a>
+
+                        <a th:href="@{/company/jobs/edit/{id}(id=${job.id})}"
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <a th:href="@{/company/jobs/delete/{id}(id=${job.id})}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Are you sure you want to delete this job?');">
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="mt-4">
+
+        <a href="/company/dashboard"
+           class="btn btn-secondary">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
