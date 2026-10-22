@@ -47,9 +47,15 @@ private String companyEmail;
 
 
     private Double salary;
+private LocalDate deadline;
 
-    private LocalDate applicationDeadline;
-   
+   public LocalDate getDeadline() {
+    return deadline;
+}
+
+public void setDeadline(LocalDate deadline) {
+    this.deadline = deadline;
+}
 
     public Job() {
     }
@@ -126,13 +132,7 @@ private String companyEmail;
         this.salary = salary;
     }
 
-    public LocalDate getApplicationDeadline() {
-        return applicationDeadline;
-    }
 
-    public void setApplicationDeadline(LocalDate applicationDeadline) {
-        this.applicationDeadline = applicationDeadline;
-    }
 
     public String getStatus() {
         return status;

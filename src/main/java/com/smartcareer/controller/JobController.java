@@ -1,4 +1,4 @@
-package com.smartcareer.controller;
+ package com.smartcareer.controller;
 
 import com.smartcareer.entity.Job;
 import com.smartcareer.service.JobService;
@@ -39,32 +39,37 @@ public class JobController {
         return "company/job-form";
     }
 
-    @PostMapping("/save")
-    public String saveJob(
-            @ModelAttribute("job") Job job,
-            Principal principal) {
+  
+@PostMapping("/save")
+public String saveJob(
+        @ModelAttribute("job") Job job,
+        Principal principal,
+        Model model) {
+
+    if (principal == null) {
+        return "redirect:/login";
+    }
 
     String companyEmail = principal.getName();
 
+    if (job.getJobTitle() == null || job.getJobTitle().isBlank()
+            || job.getLocation() == null || job.getLocation().isBlank()) {
 
-    System.out.println("========== SAVE JOB ==========");
-    System.out.println("Logged in company: " + principal.getName());
-    System.out.println("Job title: " + job.getJobTitle());
-    System.out.println("Location: " + job.getLocation());
-
-
-       job.setCompanyEmail(companyEmail);
-
-        if (job.getStatus() == null || job.getStatus().isBlank()) {
-            job.setStatus("OPEN");
-        }
-
-        jobService.saveJob(job);
-
-        System.out.println("========== JOB SAVED ==========");
-
-        return "redirect:/company/jobs";
+        model.addAttribute("error",
+                "Job title and location are required.");
+        return "company/job-form";
     }
+
+    job.setCompanyEmail(companyEmail);
+
+    if (job.getStatus() == null || job.getStatus().isBlank()) {
+        job.setStatus("OPEN");
+    }
+
+    jobService.saveJob(job);
+
+    return "redirect:/company/jobs";
+}
 
     @GetMapping("/view/{id}")
     public String viewJob(

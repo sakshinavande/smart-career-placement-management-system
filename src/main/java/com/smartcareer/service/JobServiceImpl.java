@@ -1,3 +1,4 @@
+
 package com.smartcareer.service;
 
 import com.smartcareer.entity.Job;
@@ -17,11 +18,6 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job saveJob(Job job) {
-
-        if (job.getStatus() == null || job.getStatus().isBlank()) {
-            job.setStatus("OPEN");
-        }
-
         return jobRepository.save(job);
     }
 
@@ -37,8 +33,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job getJobById(Long id) {
-        return jobRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Job not found"));
+        return jobRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -47,24 +42,17 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job updateJob(Long id, Job updatedJob) {
+    public Job updateJob(Long id, Job job) {
+        Job existingJob = jobRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Job not found: " + id));
 
-        Job existingJob = getJobById(id);
-
-        existingJob.setJobTitle(updatedJob.getJobTitle());
-        existingJob.setJobType(updatedJob.getJobType());
-        existingJob.setLocation(updatedJob.getLocation());
-        existingJob.setRequiredSkills(updatedJob.getRequiredSkills());
-        existingJob.setMinCgpa(updatedJob.getMinCgpa());
-        existingJob.setExperienceRequired(
-                updatedJob.getExperienceRequired()
-        );
-        existingJob.setJobDescription(updatedJob.getJobDescription());
-        existingJob.setSalary(updatedJob.getSalary());
-        existingJob.setApplicationDeadline(
-                updatedJob.getApplicationDeadline()
-        );
-        existingJob.setStatus(updatedJob.getStatus());
+        existingJob.setJobTitle(job.getJobTitle());
+        existingJob.setJobType(job.getJobType());
+        existingJob.setLocation(job.getLocation());
+        existingJob.setRequiredSkills(job.getRequiredSkills());
+        existingJob.setMinCgpa(job.getMinCgpa());
+        existingJob.setDeadline(job.getDeadline());
 
         return jobRepository.save(existingJob);
     }
