@@ -1,12 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Company Dashboard - Smart Career</title>
 
@@ -16,7 +14,6 @@
         rel="stylesheet">
 
     <style>
-
         body {
             background-color: #f5f7fb;
             font-family: Arial, sans-serif;
@@ -60,6 +57,12 @@
             font-weight: bold;
         }
 
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
         .coming-soon {
             font-size: 14px;
             color: #6c757d;
@@ -71,423 +74,349 @@
             text-align: center;
             color: #6c757d;
         }
-
     </style>
-
 </head>
 
-
 <body>
-
 
 <!-- ================= NAVBAR ================= -->
 
 <nav class="navbar navbar-dark">
-
     <div class="container">
 
-        <a class="navbar-brand"
-           th:href="@{/company/dashboard}">
-
+        <a class="navbar-brand" th:href="@{/company/dashboard}">
             Smart Career & Placement Management System
-
         </a>
 
-
         <div>
-
             <a th:href="@{/company/profile}"
                class="btn btn-outline-light btn-sm me-2">
-
                 My Profile
-
             </a>
-
 
             <form th:action="@{/logout}"
                   method="post"
                   style="display: inline;">
 
-                <button type="submit"
-                        class="btn btn-danger btn-sm">
-
+                <button type="submit" class="btn btn-danger btn-sm">
                     Logout
-
                 </button>
 
             </form>
-
         </div>
 
     </div>
-
 </nav>
-
-
 
 <!-- ================= MAIN CONTENT ================= -->
 
 <div class="container">
 
-
     <!-- Dashboard Header -->
 
     <div class="dashboard-header">
 
-        <h2 class="mb-2">
-            Company Dashboard
-        </h2>
+        <h2 class="mb-2">Company Dashboard</h2>
 
         <p class="text-muted mb-0">
-
             Welcome to the Smart Career & Placement Management System.
             Manage your company profile, jobs and recruitment activities
             from this dashboard.
-
         </p>
 
     </div>
 
+    <!-- ================= PLACEMENT STATISTICS ================= -->
 
+    <div class="row g-4 mt-2">
+
+        <!-- Total Jobs -->
+
+        <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card">
+
+                <div class="card-icon">💼</div>
+
+                <h5>Total Jobs</h5>
+
+                <div class="stat-number text-primary"
+                     th:text="${totalJobs}">0</div>
+
+                <p class="text-muted mb-0">
+                    Jobs posted by your company
+                </p>
+
+            </div>
+        </div>
+
+        <!-- Total Applications -->
+
+        <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card">
+
+                <div class="card-icon">📄</div>
+
+                <h5>Total Applications</h5>
+
+                <div class="stat-number text-primary"
+                     th:text="${totalApplications}">0</div>
+
+                <p class="text-muted mb-0">
+                    Applications received
+                </p>
+
+            </div>
+        </div>
+
+        <!-- Shortlisted Students -->
+
+        <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card">
+
+                <div class="card-icon">⭐</div>
+
+                <h5>Shortlisted Students</h5>
+
+                <div class="stat-number text-warning"
+                     th:text="${shortlistedCount}">0</div>
+
+                <p class="text-muted mb-0">
+                    Applicants shortlisted
+                </p>
+
+            </div>
+        </div>
+
+        <!-- Selected Students -->
+
+        <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card">
+
+                <div class="card-icon">🎉</div>
+
+                <h5>Selected Students</h5>
+
+                <div class="stat-number text-success"
+                     th:text="${selectedCount}">0</div>
+
+                <p class="text-muted mb-0">
+                    Applicants selected
+                </p>
+
+            </div>
+        </div>
+
+    </div>
 
     <!-- ================= DASHBOARD CARDS ================= -->
 
     <div class="row g-4 mt-2">
 
-
         <!-- My Profile -->
 
         <div class="col-md-6 col-lg-4">
-
             <div class="dashboard-card">
 
-                <div class="card-icon">
-                    🏢
-                </div>
+                <div class="card-icon">🏢</div>
 
-                <h5>
-                    My Profile
-                </h5>
+                <h5>My Profile</h5>
 
                 <p class="text-muted">
-
                     Create and manage your company profile
                     and company information.
-
                 </p>
 
                 <a th:href="@{/company/profile}"
                    class="btn btn-primary">
-
                     View Profile
-
                 </a>
 
             </div>
-
         </div>
-
-
 
         <!-- My Jobs -->
 
         <div class="col-md-6 col-lg-4">
-
             <div class="dashboard-card">
 
-                <div class="card-icon">
-                    💼
-                </div>
+                <div class="card-icon">💼</div>
 
-                <h5>
-                    My Jobs
-                </h5>
+                <h5>My Jobs</h5>
 
                 <p class="text-muted">
-
-                    Create, manage and view your
-                    job postings.
-
+                    Create, manage and view your job postings.
                 </p>
-                  <a href="/company/jobs"
-           class="btn btn-primary">
-            Manage Jobs
-        </a>
 
-                <button type="button"
-                        class="btn btn-secondary"
-                        disabled>
+                <a th:href="@{/company/jobs}"
+                   class="btn btn-primary mb-2">
+                    Manage Jobs
+                </a>
 
-                    Coming Soon
-
-                </button>
-
-                <div class="coming-soon mt-2">
-
-                    Job Management will be available
-                    in Phase 11.
-
-                </div>
+                <a th:href="@{/company/applications}"
+                   class="btn btn-primary mb-2">
+                    Manage Applications
+                </a>
 
             </div>
-
         </div>
-
-
 
         <!-- Applications -->
 
         <div class="col-md-6 col-lg-4">
-
             <div class="dashboard-card">
 
-                <div class="card-icon">
-                    📄
-                </div>
+                <div class="card-icon">📄</div>
 
-                <h5>
-                    Applications
-                </h5>
+                <h5>Applications</h5>
 
                 <p class="text-muted">
-
-                    View applications submitted by
-                    students for your jobs.
-
+                    View applications submitted by students
+                    for your jobs.
                 </p>
 
-                <button type="button"
-                        class="btn btn-secondary"
-                        disabled>
-
-                    Coming Soon
-
-                </button>
-
-                <div class="coming-soon mt-2">
-
-                    Application Management will be
-                    added later.
-
-                </div>
+                <a th:href="@{/company/applications}"
+                   class="btn btn-primary">
+                    View Applications
+                </a>
 
             </div>
-
         </div>
-
-
 
         <!-- Eligible Students -->
 
         <div class="col-md-6 col-lg-4">
-
             <div class="dashboard-card">
 
-                <div class="card-icon">
-                    🎓
-                </div>
+                <div class="card-icon">🎓</div>
 
-                <h5>
-                    Eligible Students
-                </h5>
+                <h5>Eligible Students</h5>
 
                 <p class="text-muted">
-
-                    View students who satisfy the
-                    eligibility criteria for your jobs.
-
+                    View students who satisfy the eligibility
+                    criteria for your jobs.
                 </p>
 
                 <button type="button"
                         class="btn btn-secondary"
                         disabled>
-
                     Coming Soon
-
                 </button>
 
                 <div class="coming-soon mt-2">
-
-                    Eligibility Management will be
-                    added later.
-
+                    Eligibility Management will be added later.
                 </div>
 
             </div>
-
         </div>
-
-
 
         <!-- Shortlisted Students -->
 
         <div class="col-md-6 col-lg-4">
-
             <div class="dashboard-card">
 
-                <div class="card-icon">
-                    ⭐
-                </div>
+                <div class="card-icon">⭐</div>
 
-                <h5>
-                    Shortlisted Students
-                </h5>
+                <h5>Shortlisted Students</h5>
 
                 <p class="text-muted">
-
-                    View and manage students
-                    shortlisted for recruitment.
-
+                    View and manage students shortlisted
+                    for recruitment.
                 </p>
 
-                <button type="button"
-                        class="btn btn-secondary"
-                        disabled>
-
-                    Coming Soon
-
-                </button>
+                <a th:href="@{/company/applications}"
+                   class="btn btn-primary">
+                    View Applications
+                </a>
 
                 <div class="coming-soon mt-2">
-
-                    Shortlisting will be added
-                    in later phases.
-
+                    Filter applications by status to view shortlisted students.
                 </div>
 
             </div>
-
         </div>
-
-
 
         <!-- Interviews -->
 
         <div class="col-md-6 col-lg-4">
-
             <div class="dashboard-card">
 
-                <div class="card-icon">
-                    🗓️
-                </div>
+                <div class="card-icon">🗓️</div>
 
-                <h5>
-                    Interviews
-                </h5>
+                <h5>Interviews</h5>
 
                 <p class="text-muted">
-
-                    Manage interview schedules
-                    and interview information.
-
+                    Manage interview schedules and interview information.
                 </p>
 
                 <button type="button"
                         class="btn btn-secondary"
                         disabled>
-
                     Coming Soon
-
                 </button>
 
                 <div class="coming-soon mt-2">
-
-                    Interview Management will
-                    be added later.
-
+                    Interview Management will be added later.
                 </div>
 
             </div>
-
         </div>
 
     </div>
-
-
 
     <!-- ================= RECRUITMENT ACTIVITIES ================= -->
 
     <div class="dashboard-header mt-4">
 
-        <h4>
-            Company Recruitment Activities
-        </h4>
+        <h4>Company Recruitment Activities</h4>
 
         <p class="text-muted">
-
-            From this system, companies will eventually
-            be able to manage job postings, student applications,
+            Use this system to manage job postings, student applications,
             eligibility, shortlisting and interviews.
-
         </p>
 
-
         <div class="row mt-3">
-
 
             <!-- Activity 1 -->
 
             <div class="col-md-4 mb-3">
-
                 <div class="p-3 border rounded">
 
-                    <h6>
-                        1. Create Jobs
-                    </h6>
+                    <h6>1. Create Jobs</h6>
 
                     <small class="text-muted">
-
-                        Post job opportunities with
-                        required skills and eligibility criteria.
-
+                        Post job opportunities with required skills
+                        and eligibility criteria.
                     </small>
 
                 </div>
-
             </div>
-
 
             <!-- Activity 2 -->
 
             <div class="col-md-4 mb-3">
-
                 <div class="p-3 border rounded">
 
-                    <h6>
-                        2. Review Applications
-                    </h6>
+                    <h6>2. Review Applications</h6>
 
                     <small class="text-muted">
-
-                        View students who apply
-                        for your posted jobs.
-
+                        View students who apply for your posted jobs.
                     </small>
 
                 </div>
-
             </div>
-
 
             <!-- Activity 3 -->
 
             <div class="col-md-4 mb-3">
-
                 <div class="p-3 border rounded">
 
-                    <h6>
-                        3. Recruit Students
-                    </h6>
+                    <h6>3. Recruit Students</h6>
 
                     <small class="text-muted">
-
-                        Shortlist students and manage
-                        interview processes.
-
+                        Shortlist students and manage interview processes.
                     </small>
 
                 </div>
-
             </div>
 
         </div>
@@ -496,23 +425,15 @@
 
 </div>
 
-
-
 <!-- ================= FOOTER ================= -->
 
 <div class="footer">
 
-    <p>
-        © 2026 Smart Career & Placement Management System
-    </p>
+    <p>© 2026 Smart Career & Placement Management System</p>
 
-    <p>
-        Company Module
-    </p>
+    <p>Company Module</p>
 
 </div>
-
-
 
 <!-- Bootstrap JS -->
 
@@ -520,7 +441,5 @@
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
 </script>
 
-
 </body>
-
 </html>

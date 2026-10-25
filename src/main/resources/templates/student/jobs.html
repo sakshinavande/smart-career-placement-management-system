@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Available Jobs - Smart Career</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -20,16 +19,38 @@
             Smart Career - Student
         </a>
 
-        <a th:href="@{/student/dashboard}" class="btn btn-light">
-            Back to Dashboard
-        </a>
+        <div class="d-flex gap-2">
+            <a th:href="@{/student/applications}"
+               class="btn btn-warning">
+                My Applications
+            </a>
+
+            <a th:href="@{/student/dashboard}"
+               class="btn btn-light">
+                Dashboard
+            </a>
+        </div>
     </div>
 </nav>
 
 <div class="container mt-5">
 
     <h2>Available Jobs</h2>
-    <p class="text-muted">Explore job opportunities posted by companies.</p>
+    <p class="text-muted">
+        Explore job opportunities and apply for suitable positions.
+    </p>
+
+    <div th:if="${param.applied}" class="alert alert-success">
+        Application submitted successfully!
+    </div>
+
+    <div th:if="${param.duplicate}" class="alert alert-warning">
+        You have already applied for this job.
+    </div>
+
+    <div th:if="${param.error}" class="alert alert-danger">
+        Unable to submit your application. Please try again.
+    </div>
 
     <div th:if="${#lists.isEmpty(jobs)}" class="alert alert-info">
         No jobs are available at the moment.
@@ -59,7 +80,10 @@
                         <span th:text="${job.requiredSkills}">Java, SQL</span>
                     </p>
 
-                  <p>Minimum CGPA: <span th:text="${job.minCgpa}"></span></p>
+                    <p>
+                        <strong>Minimum CGPA:</strong>
+                        <span th:text="${job.minCgpa}">7.0</span>
+                    </p>
 
                     <p>
                         <strong>Salary:</strong>
@@ -71,6 +95,22 @@
                         <span th:text="${job.status}"
                               class="badge bg-success">OPEN</span>
                     </p>
+
+                    <form th:if="${job.status == 'OPEN'}"
+                          th:action="@{/student/jobs/{id}/apply(id=${job.id})}"
+                          method="post">
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+                            Apply for Job
+                        </button>
+                    </form>
+
+                    <button th:if="${job.status != 'OPEN'}"
+                            class="btn btn-secondary w-100"
+                            disabled>
+                        Applications Closed
+                    </button>
 
                 </div>
             </div>

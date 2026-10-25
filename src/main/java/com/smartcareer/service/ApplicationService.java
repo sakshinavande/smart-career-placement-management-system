@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 public class ApplicationService {
 
+    
     private final ApplicationRepository applicationRepository;
 
     public ApplicationService(ApplicationRepository applicationRepository) {
@@ -30,10 +31,13 @@ public class ApplicationService {
         Long studentId = application.getStudent().getId();
         Long jobId = application.getJob().getId();
 
-        if (studentId != null && jobId != null
-                && applicationRepository.existsByStudentIdAndJobId(studentId, jobId)) {
-            throw new RuntimeException("Application already submitted for this job");
-        }
+        
+if (studentId != null && jobId != null
+        && applicationRepository.existsByStudent_IdAndJob_Id(studentId, jobId)) {
+    throw new RuntimeException(
+            "Application already submitted for this job");
+}
+
 
         if (application.getStatus() == null || application.getStatus().isBlank()) {
             application.setStatus("APPLIED");
@@ -62,11 +66,11 @@ public class ApplicationService {
     }
 
     public List<Application> getApplicationsByStudent(Long studentId) {
-        return applicationRepository.findByStudentId(studentId);
+        return applicationRepository.findByStudent_Id(studentId);
     }
 
     public List<Application> getApplicationsByJob(Long jobId) {
-        return applicationRepository.findByJobId(jobId);
+        return applicationRepository.findByJob_Id(jobId);
     }
 
     public List<Application> getApplicationsByStatus(String status) {
@@ -90,4 +94,9 @@ public class ApplicationService {
 
         applicationRepository.deleteById(id);
     }
+
+    public boolean hasApplied(Long studentId, Long jobId) {
+    return applicationRepository
+            .existsByStudent_IdAndJob_Id(studentId, jobId);
+}
 }
